@@ -145,7 +145,6 @@ const char defaultTeamNames[22][25] = /* [1..22] of string [24] */
 	"Carlos' Crawlers"
 };
 
-
 const JE_EditorItemAvailType initialItemAvail =
 {
 	1,1,1,0,0,1,1,0,1,1,1,1,1,0,1,0,1,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0, /* Front/Rear Weapons 1-38  */
@@ -163,7 +162,6 @@ const JE_EditorItemAvailType initialItemAvail =
  * X div 168 = Shield (1-12)
  * X div 280 = Engine (1-06)
  */
-
 
 JE_boolean smoothies[9] = /* [1..9] */
 { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -246,7 +244,7 @@ JE_word editorLevel;   /*Initial value 800*/
 
 Config opentyrian_config;  // implicitly initialized
 
-bool load_opentyrian_config( void )
+bool load_opentyrian_config(void)
 {
 	// defaults
 	fullscreen_display = -1;
@@ -302,7 +300,7 @@ bool load_opentyrian_config( void )
 	return true;
 }
 
-bool save_opentyrian_config( void )
+bool save_opentyrian_config(void)
 {
 	Config *config = &opentyrian_config;
 	
@@ -350,7 +348,7 @@ bool save_opentyrian_config( void )
 	return true;
 }
 
-static void playeritems_to_pitems( JE_PItemsType pItems, PlayerItems *items, JE_byte initial_episode_num )
+static void playeritems_to_pitems(JE_PItemsType pItems, PlayerItems *items, JE_byte initial_episode_num)
 {
 	pItems[0]  = items->weapon[FRONT_WEAPON].id;
 	pItems[1]  = items->weapon[REAR_WEAPON].id;
@@ -366,7 +364,7 @@ static void playeritems_to_pitems( JE_PItemsType pItems, PlayerItems *items, JE_
 	pItems[11] = items->ship;
 }
 
-static void pitems_to_playeritems( PlayerItems *items, JE_PItemsType pItems, JE_byte *initial_episode_num )
+static void pitems_to_playeritems(PlayerItems *items, JE_PItemsType pItems, JE_byte *initial_episode_num)
 {
 	items->weapon[FRONT_WEAPON].id  = pItems[0];
 	items->weapon[REAR_WEAPON].id   = pItems[1];
@@ -383,7 +381,7 @@ static void pitems_to_playeritems( PlayerItems *items, JE_PItemsType pItems, JE_
 	items->ship                     = pItems[11];
 }
 
-void JE_saveGame( JE_byte slot, const char *name )
+void JE_saveGame(JE_byte slot, const char *name)
 {
 	saveFiles[slot-1].initialDifficulty = initialDifficulty;
 	saveFiles[slot-1].gameHasRepeated = gameHasRepeated;
@@ -439,7 +437,7 @@ void JE_saveGame( JE_byte slot, const char *name )
 	JE_saveConfiguration();
 }
 
-void JE_loadGame( JE_byte slot )
+void JE_loadGame(JE_byte slot)
 {
 	superTyrian = false;
 	onePlayerAction = false;
@@ -505,11 +503,9 @@ void JE_loadGame( JE_byte slot )
 	if (strcmp(levelName, "Completed") == 0)
 	{
 		if (episode == EPISODE_AVAILABLE)
-		{
 			episode = 1;
-		} else if (episode < EPISODE_AVAILABLE) {
+		else if (episode < EPISODE_AVAILABLE)
 			episode++;
-		}
 		/* Increment episode.  Episode EPISODE_AVAILABLE goes to 1. */
 	}
 
@@ -518,7 +514,7 @@ void JE_loadGame( JE_byte slot )
 	memcpy(&lastLevelName, &levelName, sizeof(levelName));
 }
 
-void JE_initProcessorType( void )
+void JE_initProcessorType(void)
 {
 	/* SYN: Originally this proc looked at your hardware specs and chose appropriate options. We don't care, so I'll just set
 	   decent defaults here. */
@@ -578,18 +574,22 @@ void JE_initProcessorType( void )
 
 }
 
-void JE_setNewGameSpeed( void )
+void JE_setNewGameSpeed(void)
 {
 	pentiumMode = false;
 
+	Uint16 speed;
 	switch (fastPlay)
 	{
-	case 0:
+	default:
+		assert(false);
+		// fall through
+	case 0:  // Normal
 		speed = 0x4300;
 		smoothScroll = true;
 		frameCountMax = 2;
 		break;
-	case 1:
+	case 1:  // Pentium Hyper
 		speed = 0x3000;
 		smoothScroll = true;
 		frameCountMax = 2;
@@ -599,17 +599,17 @@ void JE_setNewGameSpeed( void )
 		smoothScroll = false;
 		frameCountMax = 2;
 		break;
-	case 3:
+	case 3:  // Slug mode
 		speed = 0x5300;
 		smoothScroll = true;
 		frameCountMax = 4;
 		break;
-	case 4:
+	case 4:  // Slower
 		speed = 0x4300;
 		smoothScroll = true;
 		frameCountMax = 3;
 		break;
-	case 5:
+	case 5:  // Slow
 		speed = 0x4300;
 		smoothScroll = true;
 		frameCountMax = 2;
@@ -617,12 +617,11 @@ void JE_setNewGameSpeed( void )
 		break;
 	}
 
-  frameCount = frameCountMax;
-  JE_resetTimerInt();
-  JE_setTimerInt();
+	setDelaySpeed(speed);
+	setDelay(frameCountMax);
 }
 
-void JE_encryptSaveTemp( void )
+void JE_encryptSaveTemp(void)
 {
 	JE_SaveGameTemp s3;
 	JE_word x;
@@ -668,7 +667,7 @@ void JE_encryptSaveTemp( void )
 	}
 }
 
-void JE_decryptSaveTemp( void )
+void JE_decryptSaveTemp(void)
 {
 	JE_boolean correct = true;
 	JE_SaveGameTemp s2;
@@ -744,7 +743,7 @@ void JE_decryptSaveTemp( void )
 	memcpy(&saveTemp, &s2, sizeof(s2));
 }
 
-const char *get_user_directory( void )
+const char *get_user_directory(void)
 {
 	static char user_dir[500] = "";
 	
@@ -780,7 +779,7 @@ const char *get_user_directory( void )
 Uint8 joyButtonAssign[4] = {1, 4, 5, 5};
 Uint8 inputDevice_ = 0, jConfigure = 0, midiPort = 1;
 
-void JE_loadConfiguration( void )
+void JE_loadConfiguration(void)
 {
 	FILE *fi;
 	int z;
@@ -823,7 +822,8 @@ void JE_loadConfiguration( void )
 		soundEffects = 1;
 		memcpy(&dosKeySettings, &defaultDosKeySettings, sizeof(dosKeySettings));
 		background2 = true;
-		tyrMusicVolume = fxVolume = 128;
+		tyrMusicVolume = 191;
+		fxVolume = 191;
 		gammaCorrection = 0;
 		processorType = 3;
 		gameSpeed = 4;
@@ -835,8 +835,6 @@ void JE_loadConfiguration( void )
 		tyrMusicVolume = 255;
 	if (fxVolume > 255)
 		fxVolume = 255;
-	
-	JE_calcFXVol();
 	
 	set_volume(tyrMusicVolume, fxVolume);
 	
@@ -912,7 +910,9 @@ void JE_loadConfiguration( void )
 		editorLevel = (saveTemp[SIZEOF_SAVEGAMETEMP - 5] << 8) | saveTemp[SIZEOF_SAVEGAMETEMP - 6];
 
 		fclose(fi);
-	} else {
+	}
+	else
+	{
 		/* We didn't have a save file! Let's make up random stuff! */
 		editorLevel = 800;
 
@@ -937,7 +937,9 @@ void JE_loadConfiguration( void )
 			{
 				saveFiles[z].highScore2 = ((mt_rand() % 20) + 1) * 1000;
 				strcpy(saveFiles[z].highScoreName, defaultTeamNames[mt_rand() % 22]);
-			} else {
+			}
+			else
+			{
 				strcpy(saveFiles[z].highScoreName, defaultHighScoreNames[mt_rand() % 34]);
 			}
 		}
@@ -946,7 +948,7 @@ void JE_loadConfiguration( void )
 	JE_initProcessorType();
 }
 
-void JE_saveConfiguration( void )
+void JE_saveConfiguration(void)
 {
 	FILE *f;
 	JE_byte *p;
@@ -1067,4 +1069,3 @@ void JE_saveConfiguration( void )
 	
 	save_opentyrian_config();
 }
-

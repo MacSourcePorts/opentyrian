@@ -35,7 +35,7 @@
 const char *custom_data_dir = NULL;
 
 // finds the Tyrian data directory
-const char *data_dir( void )
+const char *data_dir(void)
 {
 #if defined(__APPLE__)
 	const char *custom_data_dir = getBundlePathSubdir("Contents/Resources/data");
@@ -76,7 +76,7 @@ const char *data_dir( void )
 }
 
 // prepend directory and fopen
-FILE *dir_fopen( const char *dir, const char *file, const char *mode )
+FILE *dir_fopen(const char *dir, const char *file, const char *mode)
 {
 	char *path = malloc(strlen(dir) + 1 + strlen(file) + 1);
 	sprintf(path, "%s/%s", dir, file);
@@ -89,7 +89,7 @@ FILE *dir_fopen( const char *dir, const char *file, const char *mode )
 }
 
 // warn when dir_fopen fails
-FILE *dir_fopen_warn(  const char *dir, const char *file, const char *mode )
+FILE *dir_fopen_warn(const char *dir, const char *file, const char *mode)
 {
 	FILE *f = dir_fopen(dir, file, mode);
 
@@ -100,7 +100,7 @@ FILE *dir_fopen_warn(  const char *dir, const char *file, const char *mode )
 }
 
 // die when dir_fopen fails
-FILE *dir_fopen_die( const char *dir, const char *file, const char *mode )
+FILE *dir_fopen_die(const char *dir, const char *file, const char *mode)
 {
 	FILE *f = dir_fopen(dir, file, mode);
 
@@ -116,7 +116,7 @@ FILE *dir_fopen_die( const char *dir, const char *file, const char *mode )
 }
 
 // check if file can be opened for reading
-bool dir_file_exists( const char *dir, const char *file )
+bool dir_file_exists(const char *dir, const char *file)
 {
 	FILE *f = dir_fopen(dir, file, "rb");
 	if (f != NULL)
@@ -125,7 +125,7 @@ bool dir_file_exists( const char *dir, const char *file )
 }
 
 // returns end-of-file position
-long ftell_eof( FILE *f )
+long ftell_eof(FILE *f)
 {
 	long pos = ftell(f);
 

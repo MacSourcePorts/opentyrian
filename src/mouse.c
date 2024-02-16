@@ -39,7 +39,7 @@ JE_word mouseXB, mouseYB;
 static JE_word mouseGrabX, mouseGrabY;
 static JE_byte mouseGrabShape[24 * 28];
 
-static void JE_drawShapeTypeOne( JE_word x, JE_word y, JE_byte *shape )
+static void JE_drawShapeTypeOne(JE_word x, JE_word y, JE_byte *shape)
 {
 	JE_word xloop = 0, yloop = 0;
 	JE_byte *p = shape; /* shape pointer */
@@ -56,7 +56,8 @@ static void JE_drawShapeTypeOne( JE_word x, JE_word y, JE_byte *shape )
 	{
 		for (xloop = 0; xloop < 24; xloop++)
 		{
-			if (s >= s_limit) return;
+			if (s >= s_limit)
+				return;
 			*s = *p;
 			s++; p++;
 		}
@@ -65,7 +66,7 @@ static void JE_drawShapeTypeOne( JE_word x, JE_word y, JE_byte *shape )
 	}
 }
 
-static void JE_grabShapeTypeOne( JE_word x, JE_word y, JE_byte *shape )
+static void JE_grabShapeTypeOne(JE_word x, JE_word y, JE_byte *shape)
 {
 	JE_word xloop = 0, yloop = 0;
 	JE_byte *p = shape; /* shape pointer */
@@ -82,7 +83,8 @@ static void JE_grabShapeTypeOne( JE_word x, JE_word y, JE_byte *shape )
 	{
 		for (xloop = 0; xloop < 24; xloop++)
 		{
-			if (s >= s_limit) return;
+			if (s >= s_limit)
+				return;
 			*p = *s;
 			s++; p++;
 		}
@@ -111,7 +113,7 @@ static const MousePointerSpriteInfo mousePointerSprites[] = // fka mouseCursorGr
 	{ 281, 8, 0, 16, 21,  7, 10 },
 };
 
-void JE_mouseStart( void )
+void JE_mouseStart(void)
 {
 	if (has_mouse)
 	{
@@ -135,7 +137,7 @@ void JE_mouseStart( void )
 	 }
 }
 
-void JE_mouseStartFilter( Uint8 filter )
+void JE_mouseStartFilter(Uint8 filter)
 {
 	if (has_mouse)
 	{
@@ -157,9 +159,8 @@ void JE_mouseStartFilter( Uint8 filter )
 	}
 }
 
-void JE_mouseReplace( void )
+void JE_mouseReplace(void)
 {
 	if (has_mouse)
 		JE_drawShapeTypeOne(mouseGrabX, mouseGrabY, mouseGrabShape);
 }
-

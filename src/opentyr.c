@@ -97,7 +97,7 @@ static const char *getScalingModePickerItem(size_t i, char *buffer, size_t buffe
 	return scaling_mode_names[i];
 }
 
-void openTyrianMenu( void )
+void setupMenu(void)
 {
 	typedef enum
 	{
@@ -111,13 +111,13 @@ void openTyrianMenu( void )
 		MENU_ITEM_SCALER,
 		MENU_ITEM_SCALING_MODE,
 		MENU_ITEM_MUSIC_VOLUME,
-		MENU_ITEM_EFFECTS_VOLUME,
+		MENU_ITEM_SOUND_VOLUME,
 	} MenuItemId;
 
 	typedef enum
 	{
 		MENU_NONE = 0,
-		MENU_OPENTYRIAN,
+		MENU_SETUP,
 		MENU_GRAPHICS,
 		MENU_SOUND,
 	} MenuId;
@@ -138,8 +138,8 @@ void openTyrianMenu( void )
 	} Menu;
 
 	static const Menu menus[] = {
-		[MENU_OPENTYRIAN] = {
-			.header = "OpenTyrian",
+		[MENU_SETUP] = {
+			.header = "Setup",
 			.items = {
 				{ MENU_ITEM_GRAPHICS, "Graphics...", "Change the graphics settings." },
 				{ MENU_ITEM_SOUND, "Sound...", "Change the sound settings." },
@@ -163,7 +163,7 @@ void openTyrianMenu( void )
 			.header = "Sound",
 			.items = {
 				{ MENU_ITEM_MUSIC_VOLUME, "Music Volume", "Change volume with the left/right arrow keys." },
-				{ MENU_ITEM_EFFECTS_VOLUME, "Effects Volume", "Change volume with the left/right arrow keys." },
+				{ MENU_ITEM_SOUND_VOLUME, "Sound Volume", "Change volume with the left/right arrow keys." },
 				{ MENU_ITEM_DONE, "Done", "Return to the previous menu." },
 				{ -1 }
 			},
@@ -179,7 +179,7 @@ void openTyrianMenu( void )
 
 	MenuId menuParents[COUNTOF(menus)] = { MENU_NONE };
 	size_t selectedMenuItemIndexes[COUNTOF(menus)] = { 0 };
-	MenuId currentMenu = MENU_OPENTYRIAN;
+	MenuId currentMenu = MENU_SETUP;
 	MenuItemId currentPicker = MENU_ITEM_NONE;
 	size_t pickerSelectedIndex = 0;
 
@@ -266,7 +266,7 @@ void openTyrianMenu( void )
 				JE_rectangle(VGAScreen, xMenuItemValue - 2, y - 2, xMenuItemValue + 96, y + 11, 242);
 				break;
 
-			case MENU_ITEM_EFFECTS_VOLUME:
+			case MENU_ITEM_SOUND_VOLUME:
 				JE_barDrawShadow(VGAScreen, xMenuItemValue, y, 1, samples_disabled ? 170 : 174, (fxVolume + 4) / 8, 2, 10);
 				JE_rectangle(VGAScreen, xMenuItemValue - 2, y - 2, xMenuItemValue + 96, y + 11, 242);
 				break;
@@ -390,12 +390,10 @@ void openTyrianMenu( void )
 										set_volume(tyrMusicVolume, fxVolume);
 										break;
 									}
-									case MENU_ITEM_EFFECTS_VOLUME:
+									case MENU_ITEM_SOUND_VOLUME:
 									{
 										int value = (lastmouse_x - xMenuItemValue) * 255 / (wMenuItemValue - 1);
 										fxVolume = MIN(MAX(0, value), 255);
-
-										JE_calcFXVol();
 
 										set_volume(tyrMusicVolume, fxVolume);
 
@@ -456,7 +454,7 @@ void openTyrianMenu( void )
 						JE_changeVolume(&tyrMusicVolume, -8, &fxVolume, 0);
 						break;
 					}
-					case MENU_ITEM_EFFECTS_VOLUME:
+					case MENU_ITEM_SOUND_VOLUME:
 					{
 						JE_changeVolume(&tyrMusicVolume, 0, &fxVolume, -8);
 
@@ -479,7 +477,7 @@ void openTyrianMenu( void )
 						JE_changeVolume(&tyrMusicVolume, 8, &fxVolume, 0);
 						break;
 					}
-					case MENU_ITEM_EFFECTS_VOLUME:
+					case MENU_ITEM_SOUND_VOLUME:
 					{
 						JE_changeVolume(&tyrMusicVolume, 0, &fxVolume, 8);
 
@@ -595,7 +593,7 @@ void openTyrianMenu( void )
 						restart_song();
 					break;
 				}
-				case MENU_ITEM_EFFECTS_VOLUME:
+				case MENU_ITEM_SOUND_VOLUME:
 				{
 					samples_disabled = !samples_disabled;
 
@@ -747,7 +745,7 @@ void openTyrianMenu( void )
 	}
 }
 
-int main( int argc, char *argv[] )
+int main(int argc, char *argv[])
 {
 	mt_srand(time(NULL));
 
@@ -796,7 +794,6 @@ int main( int argc, char *argv[] )
 		JE_loadMainShapeTables("tyrian.shp");
 	}
 
-
 	/* Default Options */
 	youAreCheating = false;
 	smoothScroll = true;
@@ -810,7 +807,7 @@ int main( int argc, char *argv[] )
 
 		load_music();
 
-		JE_loadSndFile("tyrian.snd", xmas ? "voicesc.snd" : "voices.snd");
+		loadSndFile(xmas);
 	}
 	else
 	{
@@ -891,4 +888,3 @@ int main( int argc, char *argv[] )
 
 	return 0;
 }
-

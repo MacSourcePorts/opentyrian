@@ -111,9 +111,8 @@ static const JE_word planetY[21] = {  40,  90,  90,  80, 170,  30,  50, 130, 120
 static const uint cube_line_chars = sizeof(*cube->text) - 1;
 static const uint cube_line_width = 150;
 
-
 /*** Functions ***/
-static Uint8 *playeritem_map( PlayerItems *items, uint i )
+static Uint8 *playeritem_map(PlayerItems *items, uint i)
 {
 	Uint8 *const map[] =
 	{
@@ -129,8 +128,7 @@ static Uint8 *playeritem_map( PlayerItems *items, uint i )
 	return map[i];
 }
 
-
-JE_longint JE_cashLeft( void )
+JE_longint JE_cashLeft(void)
 {
 	JE_longint tempL = player[0].cash;
 	JE_word itemNum = *playeritem_map(&player[0].items, curSel[MENU_UPGRADES] - 2);
@@ -154,7 +152,7 @@ JE_longint JE_cashLeft( void )
 	return tempL;
 }
 
-void JE_itemScreen( void )
+void JE_itemScreen(void)
 {
 	bool quit = false;
 
@@ -198,7 +196,7 @@ void JE_itemScreen( void )
 
 		int slot = 0;
 
-		for ( ; slot < itemAvailMax[itemAvailMap[i]-1]; ++slot)
+		for (; slot < itemAvailMax[itemAvailMap[i]-1]; ++slot)
 		{
 			if (itemAvail[itemAvailMap[i]-1][slot] == item)
 				break;
@@ -541,11 +539,9 @@ void JE_itemScreen( void )
 				{
 					case 1: /* ship */
 						if (temp > 90)
-						{
 							snprintf(tempStr, sizeof(tempStr), "Custom Ship %d", temp - 90);
-						} else {
+						else
 							strcpy(tempStr, ships[temp].name);
-						}
 						break;
 					case 2: /* front and rear weapon */
 					case 3:
@@ -563,11 +559,9 @@ void JE_itemScreen( void )
 						break;
 				}
 				if (tempW == curSel[curMenu]-1)
-				{
 					temp2 = 15;
-				} else {
+				else
 					temp2 = 28;
-				}
 
 				JE_getShipInfo();
 
@@ -880,7 +874,7 @@ void JE_itemScreen( void )
 					}
 					JE_mouseReplace();
 
-					setjasondelay(1);
+					setDelay(1);
 				}
 				else
 				{
@@ -910,7 +904,7 @@ void JE_itemScreen( void )
 					     (curSel[MENU_UPGRADES] >= 6 &&
 					      curSel[MENU_UPGRADES] <= 8)))
 					{
-						setjasondelay(3);
+						setDelay(3);
 						JE_weaponSimUpdate();
 						JE_drawScore();
 						service_SDL_events(false);
@@ -940,12 +934,12 @@ void JE_itemScreen( void )
 
 						JE_mouseReplace();
 
-					} else { /* current menu is anything but weapon sim or datacube */
-
-						setjasondelay(2);
+					}
+					else  /* current menu is anything but weapon sim or datacube */
+					{
+						setDelay(2);
 
 						JE_drawScore();
-						//JE_waitRetrace();  didn't do anything anyway?
 
 						if (newPal > 0)
 						{
@@ -984,7 +978,7 @@ void JE_itemScreen( void )
 
 				if (curMenu != MENU_LOAD_SAVE)
 				{
-					if (keysactive[SDL_SCANCODE_S] && (keysactive[SDL_SCANCODE_LALT] || keysactive[SDL_SCANCODE_RALT]) )
+					if (keysactive[SDL_SCANCODE_S] && (keysactive[SDL_SCANCODE_LALT] || keysactive[SDL_SCANCODE_RALT]))
 					{
 						if (curMenu == MENU_DATA_CUBE_SUB ||
 						    curMenu == MENU_DATA_CUBES)
@@ -998,7 +992,7 @@ void JE_itemScreen( void )
 						newPal = 1;
 						oldPal = curPal;
 					}
-					if (keysactive[SDL_SCANCODE_L] && (keysactive[SDL_SCANCODE_LALT] || keysactive[SDL_SCANCODE_RALT]) )
+					if (keysactive[SDL_SCANCODE_L] && (keysactive[SDL_SCANCODE_LALT] || keysactive[SDL_SCANCODE_RALT]))
 					{
 						if (curMenu == MENU_DATA_CUBE_SUB ||
 						    curMenu == MENU_DATA_CUBES)
@@ -1020,11 +1014,9 @@ void JE_itemScreen( void )
 					{
 						inputDetected = false;
 						if (mouseCursor == MOUSE_POINTER_UP)
-						{
 							yChg = -1;
-						} else {
+						else
 							yChg = 1;
-						}
 					}
 
 					if (keysactive[SDL_SCANCODE_PAGEUP])
@@ -1125,8 +1117,6 @@ void JE_itemScreen( void )
 					if (fxVolume > 255)
 						fxVolume = 255;
 				}
-
-				JE_calcFXVol();
 
 				set_volume(tyrMusicVolume, fxVolume);
 
@@ -1448,17 +1438,14 @@ void JE_itemScreen( void )
 						JE_playSampleNum(S_CURSOR);
 
 						int temp = curSel[curMenu] - 3;
-						do {
+						do
+						{
 							if (joysticks == 0)
-							{
 								inputDevice[temp == 0 ? 1 : 0] = inputDevice[temp]; // swap controllers
-							}
 							if (inputDevice[temp] <= 1)
-							{
 								inputDevice[temp] = 2 + joysticks;
-							} else {
+							else
 								inputDevice[temp]--;
-							}
 						} while (inputDevice[temp] == inputDevice[temp == 0 ? 1 : 0]);
 						break;
 					}
@@ -1544,17 +1531,14 @@ void JE_itemScreen( void )
 						JE_playSampleNum(S_CURSOR);
 
 						int temp = curSel[curMenu] - 3;
-						do {
+						do
+						{
 							if (joysticks == 0)
-							{
 								inputDevice[temp == 0 ? 1 : 0] = inputDevice[temp]; // swap controllers
-							}
 							if (inputDevice[temp] >= 2 + joysticks)
-							{
 								inputDevice[temp] = 1;
-							} else {
+							else
 								inputDevice[temp]++;
-							}
 						} while (inputDevice[temp] == inputDevice[temp == 0 ? 1 : 0]);
 						break;
 					}
@@ -1657,7 +1641,7 @@ void JE_itemScreen( void )
 		fade_black(10);
 }
 
-void draw_ship_illustration( void )
+void draw_ship_illustration(void)
 {
 	// full of evil hardcoding
 
@@ -1751,7 +1735,7 @@ void draw_ship_illustration( void )
 	blit_sprite_hv(VGAScreenSeg, 28, 23, OPTION_SHAPES, 26, 15, shields[player[0].items.shield].mpwr - 10);
 }
 
-void load_cubes( void )
+void load_cubes(void)
 {
 	for (int cube_slot = 0; cube_slot < cubeMax; ++cube_slot)
 	{
@@ -1761,7 +1745,7 @@ void load_cubes( void )
 	}
 }
 
-bool load_cube( int cube_slot, int cube_index )
+bool load_cube(int cube_slot, int cube_index)
 {
 	FILE *f = dir_fopen_die(data_dir(), cube_file, "rb");
 
@@ -1863,7 +1847,7 @@ bool load_cube( int cube_slot, int cube_index )
 	return true;
 }
 
-void JE_drawItem( JE_byte itemType, JE_word itemNum, JE_word x, JE_word y )
+void JE_drawItem(JE_byte itemType, JE_word itemNum, JE_word x, JE_word y)
 {
 	JE_word tempW = 0;
 
@@ -1907,7 +1891,7 @@ void JE_drawItem( JE_byte itemType, JE_word itemNum, JE_word x, JE_word y )
 	}
 }
 
-void JE_drawMenuHeader( void )
+void JE_drawMenuHeader(void)
 {
 	switch (curMenu)
 	{
@@ -1927,7 +1911,7 @@ void JE_drawMenuHeader( void )
 	JE_dString(VGAScreen, 74 + JE_fontCenter(tempStr, FONT_SHAPES), 10, tempStr, FONT_SHAPES);
 }
 
-void JE_drawMenuChoices( void )
+void JE_drawMenuChoices(void)
 {
 	JE_byte x;
 	char *str;
@@ -1967,7 +1951,9 @@ void JE_drawMenuChoices( void )
 		{
 			str[0] = '~';
 			strcpy(str+1, menuInt[curMenu + 1][x-1]);
-		} else {
+		}
+		else
+		{
 			strcpy(str, menuInt[curMenu + 1][x-1]);
 		}
 		JE_dString(VGAScreen, 166, tempY, str, SMALL_FONT_SHAPES);
@@ -1975,7 +1961,7 @@ void JE_drawMenuChoices( void )
 	}
 }
 
-void JE_updateNavScreen( void )
+void JE_updateNavScreen(void)
 {
 	JE_byte x;
 
@@ -2053,7 +2039,7 @@ void JE_updateNavScreen( void )
 	}
 }
 
-void JE_drawLines( SDL_Surface *surface, JE_boolean dark )
+void JE_drawLines(SDL_Surface *surface, JE_boolean dark)
 {
 	JE_byte x, y;
 	JE_integer tempX, tempY;
@@ -2072,11 +2058,9 @@ void JE_drawLines( SDL_Surface *surface, JE_boolean dark )
 		if (tempX > 18 && tempX < 135)
 		{
 			if (dark)
-			{
 				JE_rectangle(surface, tempX + 1, 0, tempX + 1, 199, 32+3);
-			} else {
+			else
 				JE_rectangle(surface, tempX, 0, tempX, 199, 32+5);
-			}
 		}
 	}
 
@@ -2089,11 +2073,9 @@ void JE_drawLines( SDL_Surface *surface, JE_boolean dark )
 		if (tempY > 15 && tempY < 169)
 		{
 			if (dark)
-			{
 				JE_rectangle(surface, 0, tempY + 1, 319, tempY + 1, 32+3);
-			} else {
+			else
 				JE_rectangle(surface, 0, tempY, 319, tempY, 32+5);
-			}
 
 			tempW2 = 0;
 
@@ -2113,7 +2095,7 @@ void JE_drawLines( SDL_Surface *surface, JE_boolean dark )
 /* SYN: This was originally PROC drawlines... yes, there were two different procs called
    drawlines in different scopes in the same file. Dammit, Jason, why do you do this to me? */
 
-void JE_drawNavLines( JE_boolean dark )
+void JE_drawNavLines(JE_boolean dark)
 {
 	JE_byte x, y;
 	JE_integer tempX, tempY;
@@ -2164,7 +2146,7 @@ void JE_drawNavLines( JE_boolean dark )
 	}
 }
 
-void JE_drawDots( void )
+void JE_drawDots(void)
 {
 	JE_byte x, y;
 	JE_integer tempX, tempY;
@@ -2181,7 +2163,7 @@ void JE_drawDots( void )
 	}
 }
 
-void JE_drawPlanet( JE_byte planetNum )
+void JE_drawPlanet(JE_byte planetNum)
 {
 	JE_integer tempZ = PGR[planetNum]-1,
 	           tempX = planetX[planetNum] + 66 - tempNavX - sprite(PLANET_SHAPES, tempZ)->width / 2,
@@ -2197,7 +2179,7 @@ void JE_drawPlanet( JE_byte planetNum )
 	}
 }
 
-void JE_scaleBitmap( SDL_Surface *dst_bitmap, const SDL_Surface *src_bitmap,  int x1, int y1, int x2, int y2 )
+void JE_scaleBitmap(SDL_Surface *dst_bitmap, const SDL_Surface *src_bitmap,  int x1, int y1, int x2, int y2)
 {
 	/* This function scales one screen and writes the result to another.
 	 *  The only code that calls it is the code run when you select 'ship
@@ -2214,7 +2196,6 @@ void JE_scaleBitmap( SDL_Surface *dst_bitmap, const SDL_Surface *src_bitmap,  in
 	float base_skip_w = src_bitmap->pitch / (float)w,
 	      base_skip_h = src_bitmap->h / (float)h;
 	float cumulative_skip_w, cumulative_skip_h;
-
 
 	//Okay, it's time to loop through and add bits of A to a rectangle in B
 	Uint8 *dst = dst_bitmap->pixels;  /* 8-bit specific */
@@ -2244,7 +2225,7 @@ void JE_scaleBitmap( SDL_Surface *dst_bitmap, const SDL_Surface *src_bitmap,  in
 	}
 }
 
-void JE_initWeaponView( void )
+void JE_initWeaponView(void)
 {
 	fill_rectangle_xy(VGAScreen, 8, 8, 144, 177, 0);
 
@@ -2270,7 +2251,7 @@ void JE_initWeaponView( void )
 	initialize_starfield();
 }
 
-void JE_computeDots( void )
+void JE_computeDots(void)
 {
 	JE_integer tempX, tempY;
 	JE_longint distX, distY;
@@ -2283,16 +2264,12 @@ void JE_computeDots( void )
 		tempX = abs(distX) + abs(distY);
 
 		if (tempX != 0)
-		{
 			planetDots[x] = roundf(sqrtf(sqrtf((distX * distX) + (distY * distY)))) - 1;
-		} else {
+		else
 			planetDots[x] = 0;
-		}
 
 		if (planetDots[x] > 10)
-		{
 			planetDots[x] = 10;
-		}
 
 		for (y = 0; y < planetDots[x]; y++)
 		{
@@ -2305,12 +2282,12 @@ void JE_computeDots( void )
 	}
 }
 
-JE_integer JE_partWay( JE_integer start, JE_integer finish, JE_byte dots, JE_byte dist )
+JE_integer JE_partWay(JE_integer start, JE_integer finish, JE_byte dots, JE_byte dist)
 {
 	return (finish - start) / (dots + 2) * (dist + 1) + start;
 }
 
-void JE_doShipSpecs( void )
+void JE_doShipSpecs(void)
 {
 	/* This function is called whenever you select 'ship specs' in the
 	 * game menu.  It draws the nice green tech screen and scales it onto
@@ -2336,7 +2313,7 @@ void JE_doShipSpecs( void )
 	wait_input(true, true, true);
 }
 
-void JE_drawMainMenuHelpText( void )
+void JE_drawMainMenuHelpText(void)
 {
 	char tempStr[67];
 	JE_byte temp;
@@ -2375,7 +2352,7 @@ void JE_drawMainMenuHelpText( void )
 	JE_textShade(VGAScreen, 10, 187, tempStr, 14, 1, DARKEN);
 }
 
-JE_boolean JE_quitRequest( void )
+JE_boolean JE_quitRequest(void)
 {
 	bool quit_selected = true, done = false;
 
@@ -2393,7 +2370,7 @@ JE_boolean JE_quitRequest( void )
 		do
 		{
 			service_SDL_events(true);
-			setjasondelay(4);
+			setDelay(4);
 
 			blit_sprite(VGAScreen, 50, 50, OPTION_SHAPES, 35);  // message box
 			JE_textShade(VGAScreen, 70, 60, miscText[28], 0, 5, FULL_SHADE);
@@ -2489,7 +2466,7 @@ JE_boolean JE_quitRequest( void )
 	return quit_selected;
 }
 
-void JE_genItemMenu( JE_byte itemNum )
+void JE_genItemMenu(JE_byte itemNum)
 {
 	menuChoices[MENU_UPGRADE_SUB] = itemAvailMax[itemAvailMap[itemNum - 2] - 1] + 2;
 
@@ -2533,11 +2510,12 @@ void JE_genItemMenu( JE_byte itemNum )
 	curSel[MENU_UPGRADE_SUB] = temp3;
 }
 
-void JE_scaleInPicture( SDL_Surface *dst, const SDL_Surface *src )
+void JE_scaleInPicture(SDL_Surface *dst, const SDL_Surface *src)
 {
 	for (int i = 2; i <= 160; i += 2)
 	{
-		if (JE_anyButton()) { break; }
+		if (JE_anyButton())
+			break;
 
 		JE_scaleBitmap(dst, src, 160 - i, 0, 160 + i - 1, 100 + roundf(i * 0.625f) - 1);
 		JE_showVGA();
@@ -2546,8 +2524,7 @@ void JE_scaleInPicture( SDL_Surface *dst, const SDL_Surface *src )
 	}
 }
 
-
-void JE_drawScore( void )
+void JE_drawScore(void)
 {
 	char cl[24];
 	if (curMenu == MENU_UPGRADE_SUB)
@@ -2557,7 +2534,7 @@ void JE_drawScore( void )
 	}
 }
 
-void JE_menuFunction( JE_byte select )
+void JE_menuFunction(JE_byte select)
 {
 	JE_byte x;
 	JE_word curSelect;
@@ -2662,7 +2639,9 @@ void JE_menuFunction( JE_byte select )
 		{
 			curMenu = MENU_FULL_GAME;
 			newPal = 1;
-		} else {
+		}
+		else
+		{
 			mainLevel = mapSection[curSelect - 2];
 			jumpSection = true;
 		}
@@ -2706,8 +2685,9 @@ void JE_menuFunction( JE_byte select )
 			col = 248;
 			colC = 1;
 
-			do {
-				setjasondelay(1);
+			do
+			{
+				setDelay(1);
 
 				col += colC;
 				if (col < 243 || col > 248)
@@ -2757,16 +2737,18 @@ void JE_menuFunction( JE_byte select )
 			{
 				curMenu = oldMenu;
 				newPal = oldPal;
-			} else {
+			}
+			else
+			{
 				curMenu = MENU_OPTIONS;
 			}
-		} else {
+		}
+		else
+		{
 			if (twoPlayerMode)
-			{
 				temp = 11;
-			} else {
+			else
 				temp = 0;
-			}
 			JE_operation(curSelect - 1 + temp);
 			if (quikSave)
 			{
@@ -2781,7 +2763,9 @@ void JE_menuFunction( JE_byte select )
 		{
 			curMenu = MENU_FULL_GAME;
 			newPal = 1;
-		} else {
+		}
+		else
+		{
 			if (cubeMax > 0)
 			{
 				firstMenu9 = true;
@@ -2789,7 +2773,9 @@ void JE_menuFunction( JE_byte select )
 				yLoc = 0;
 				yChg = 0;
 				currentCube = curSel[MENU_DATA_CUBES] - 2;
-			} else {
+			}
+			else
+			{
 				curMenu = MENU_FULL_GAME;
 				newPal = 1;
 			}
@@ -2812,17 +2798,14 @@ void JE_menuFunction( JE_byte select )
 			JE_playSampleNum(S_CURSOR);
 
 			int temp = curSel[curMenu] - 3;
-			do {
+			do
+			{
 				if (joysticks == 0)
-				{
 					inputDevice[temp == 0 ? 1 : 0] = inputDevice[temp]; // swap controllers
-				}
 				if (inputDevice[temp] >= 2 + joysticks)
-				{
 					inputDevice[temp] = 1;
-				} else {
+				else
 					inputDevice[temp]++;
-				}
 			} while (inputDevice[temp] == inputDevice[temp == 0 ? 1 : 0]);
 			break;
 		case 5:
@@ -2989,7 +2972,7 @@ joystick_assign_done:
 	old_items[0] = player[0].items;
 }
 
-void JE_drawShipSpecs( SDL_Surface * screen, SDL_Surface * temp_screen  )
+void JE_drawShipSpecs(SDL_Surface * screen, SDL_Surface * temp_screen)
 {
 	/* In this function we create our ship description image.
 	 *
@@ -2998,7 +2981,6 @@ void JE_drawShipSpecs( SDL_Surface * screen, SDL_Surface * temp_screen  )
 
 	int temp_x = 0, temp_y = 0, temp_index;
 	Uint8 *src, *dst;
-
 
 	//first, draw the text and other assorted flavoring.
 	JE_clr256(screen);
@@ -3014,7 +2996,6 @@ void JE_drawShipSpecs( SDL_Surface * screen, SDL_Surface * temp_screen  )
 	verticalHeight = 7;
 
 	JE_outText(screen, JE_fontCenter(miscText[4], TINY_FONT), 190, miscText[4], 12, 2);
-
 
 	//now draw the green ship over that.
 	//This hardcoded stuff is for positioning our little ship graphic
@@ -3050,7 +3031,6 @@ void JE_drawShipSpecs( SDL_Surface * screen, SDL_Surface * temp_screen  )
 	}
 	temp_x -= 30;
 
-
 	//draw the ship into our temp buffer.
 	JE_clr256(temp_screen);
 	blit_sprite(temp_screen, temp_x, temp_y, OPTION_SHAPES, temp_index - 1);  // ship illustration
@@ -3081,11 +3061,9 @@ void JE_drawShipSpecs( SDL_Surface * screen, SDL_Surface * temp_screen  )
 			avg /= 4;
 
 			if ((*src & 0x0f) > avg)
-			{
 				*dst = (*src & 0x0f) | 0xc0;
-			//} else {
+			//else
 			//	*dst = 0;
-			}
 
 			src++;
 			dst++;
@@ -3093,7 +3071,7 @@ void JE_drawShipSpecs( SDL_Surface * screen, SDL_Surface * temp_screen  )
 	}
 }
 
-void JE_weaponSimUpdate( void )
+void JE_weaponSimUpdate(void)
 {
 	char buf[32];
 
@@ -3155,7 +3133,7 @@ void JE_weaponSimUpdate( void )
 	JE_drawItem(1, player[0].items.ship, player[0].x - 5, player[0].y - 7);
 }
 
-void JE_weaponViewFrame( void )
+void JE_weaponViewFrame(void)
 {
 	fill_rectangle_xy(VGAScreen, 8, 8, 143, 182, 0);
 
@@ -3231,7 +3209,6 @@ void JE_weaponViewFrame( void )
 
 	blit_sprite(VGAScreenSeg, 0, 0, OPTION_SHAPES, 12); // upgrade interface
 
-
 	/*========================Power Bar=========================*/
 
 	power += powerAdd;
@@ -3273,4 +3250,3 @@ void JE_weaponViewFrame( void )
 
 	//JE_waitFrameCount();  TODO: didn't do anything?
 }
-
